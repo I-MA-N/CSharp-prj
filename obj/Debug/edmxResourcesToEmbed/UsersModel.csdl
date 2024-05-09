@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="UsersModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tbl_Profiles">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="Int32" Nullable="false" />
+    <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="age" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_Users">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="role" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_UserId">
+    <End Role="tbl_Users" Type="Self.tbl_Users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tbl_Profiles" Type="Self.tbl_Profiles" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="tbl_Profiles">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EN_Users" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tbl_Profiles" EntityType="Self.tbl_Profiles" />
+    <EntitySet Name="tbl_Users" EntityType="Self.tbl_Users" />
+    <AssociationSet Name="FK_UserId" Association="Self.FK_UserId">
+      <End Role="tbl_Users" EntitySet="tbl_Users" />
+      <End Role="tbl_Profiles" EntitySet="tbl_Profiles" />
+    </AssociationSet>
+    <EntitySet Name="view_GetOnlySimpleusers" EntityType="UsersModel.view_GetOnlySimpleusers" />
+    <EntitySet Name="view_GetOnlyAdmins" EntityType="UsersModel.view_GetOnlyAdmins" />
+    <EntitySet Name="tbl_Messages" EntityType="UsersModel.tbl_Messages" />
+  </EntityContainer>
+  <EntityType Name="view_GetOnlySimpleusers">
+    <Key>
+      <PropertyRef Name="userId" />
+      <PropertyRef Name="age" />
+    </Key>
+    <Property Name="userId" Type="Int32" Nullable="false" />
+    <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="age" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="view_GetOnlyAdmins">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="Int32" Nullable="false" />
+    <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tbl_Messages">
+    <Key>
+      <PropertyRef Name="messageId" />
+    </Key>
+    <Property Name="messageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="adminId" Type="Int32" Nullable="false" />
+    <Property Name="simpleuserId" Type="Int32" Nullable="false" />
+    <Property Name="subject" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="bodyText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

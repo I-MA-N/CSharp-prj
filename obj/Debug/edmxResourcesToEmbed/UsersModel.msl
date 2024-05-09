@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="UsersModelStoreContainer" CdmEntityContainer="EN_Users">
+    <EntitySetMapping Name="tbl_Profiles">
+      <EntityTypeMapping TypeName="UsersModel.tbl_Profiles">
+        <MappingFragment StoreEntitySet="tbl_Profiles">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="age" ColumnName="age" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_Users">
+      <EntityTypeMapping TypeName="UsersModel.tbl_Users">
+        <MappingFragment StoreEntitySet="tbl_Users">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="role" ColumnName="role" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="view_GetOnlySimpleusers">
+      <EntityTypeMapping TypeName="UsersModel.view_GetOnlySimpleusers">
+        <MappingFragment StoreEntitySet="view_GetOnlySimpleusers">
+          <ScalarProperty Name="age" ColumnName="age" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="view_GetOnlyAdmins">
+      <EntityTypeMapping TypeName="UsersModel.view_GetOnlyAdmins">
+        <MappingFragment StoreEntitySet="view_GetOnlyAdmins">
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tbl_Messages">
+      <EntityTypeMapping TypeName="UsersModel.tbl_Messages">
+        <MappingFragment StoreEntitySet="tbl_Messages">
+          <ScalarProperty Name="bodyText" ColumnName="bodyText" />
+          <ScalarProperty Name="subject" ColumnName="subject" />
+          <ScalarProperty Name="simpleuserId" ColumnName="simpleuserId" />
+          <ScalarProperty Name="adminId" ColumnName="adminId" />
+          <ScalarProperty Name="messageId" ColumnName="messageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

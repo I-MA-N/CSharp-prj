@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="UsersModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tbl_Messages">
+    <Key>
+      <PropertyRef Name="messageId" />
+    </Key>
+    <Property Name="messageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="adminId" Type="int" Nullable="false" />
+    <Property Name="simpleuserId" Type="int" Nullable="false" />
+    <Property Name="subject" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="bodyText" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="tbl_Profiles">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="int" Nullable="false" />
+    <Property Name="firstName" Type="nvarchar" MaxLength="100" />
+    <Property Name="lastName" Type="nvarchar" MaxLength="100" />
+    <Property Name="age" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_Users">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="password" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="role" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Users.dbo.view_GetOnlyAdmins' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="view_GetOnlyAdmins">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="int" Nullable="false" />
+    <Property Name="firstName" Type="nvarchar" MaxLength="100" />
+    <Property Name="lastName" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Users.dbo.view_GetOnlySimpleusers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="view_GetOnlySimpleusers">
+    <Key>
+      <PropertyRef Name="userId" />
+      <PropertyRef Name="age" />
+    </Key>
+    <Property Name="userId" Type="int" Nullable="false" />
+    <Property Name="firstName" Type="nvarchar" MaxLength="100" />
+    <Property Name="lastName" Type="nvarchar" MaxLength="100" />
+    <Property Name="age" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_UserId">
+    <End Role="tbl_Users" Type="Self.tbl_Users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tbl_Profiles" Type="Self.tbl_Profiles" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="tbl_Profiles">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="UsersModelStoreContainer">
+    <EntitySet Name="tbl_Messages" EntityType="Self.tbl_Messages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Profiles" EntityType="Self.tbl_Profiles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Users" EntityType="Self.tbl_Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="view_GetOnlyAdmins" EntityType="Self.view_GetOnlyAdmins" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [view_GetOnlyAdmins].[userId] AS [userId], 
+    [view_GetOnlyAdmins].[firstName] AS [firstName], 
+    [view_GetOnlyAdmins].[lastName] AS [lastName]
+    FROM [dbo].[view_GetOnlyAdmins] AS [view_GetOnlyAdmins]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="view_GetOnlySimpleusers" EntityType="Self.view_GetOnlySimpleusers" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [view_GetOnlySimpleusers].[userId] AS [userId], 
+    [view_GetOnlySimpleusers].[firstName] AS [firstName], 
+    [view_GetOnlySimpleusers].[lastName] AS [lastName], 
+    [view_GetOnlySimpleusers].[age] AS [age]
+    FROM [dbo].[view_GetOnlySimpleusers] AS [view_GetOnlySimpleusers]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_UserId" Association="Self.FK_UserId">
+      <End Role="tbl_Users" EntitySet="tbl_Users" />
+      <End Role="tbl_Profiles" EntitySet="tbl_Profiles" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

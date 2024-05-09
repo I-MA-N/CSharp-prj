@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="UsersModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_Messages">
+          <Key>
+            <PropertyRef Name="messageId" />
+          </Key>
+          <Property Name="messageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="adminId" Type="int" Nullable="false" />
+          <Property Name="simpleuserId" Type="int" Nullable="false" />
+          <Property Name="subject" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="bodyText" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_Profiles">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="age" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_Users">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="role" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Users.dbo.view_GetOnlyAdmins' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_GetOnlyAdmins">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Users.dbo.view_GetOnlySimpleusers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_GetOnlySimpleusers">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="age" />
+          </Key>
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="age" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_UserId">
+          <End Role="tbl_Users" Type="Self.tbl_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tbl_Profiles" Type="Self.tbl_Profiles" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="tbl_Profiles">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="UsersModelStoreContainer">
+          <EntitySet Name="tbl_Messages" EntityType="Self.tbl_Messages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Profiles" EntityType="Self.tbl_Profiles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Users" EntityType="Self.tbl_Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="view_GetOnlyAdmins" EntityType="Self.view_GetOnlyAdmins" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_GetOnlyAdmins].[userId] AS [userId], 
+    [view_GetOnlyAdmins].[firstName] AS [firstName], 
+    [view_GetOnlyAdmins].[lastName] AS [lastName]
+    FROM [dbo].[view_GetOnlyAdmins] AS [view_GetOnlyAdmins]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_GetOnlySimpleusers" EntityType="Self.view_GetOnlySimpleusers" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_GetOnlySimpleusers].[userId] AS [userId], 
+    [view_GetOnlySimpleusers].[firstName] AS [firstName], 
+    [view_GetOnlySimpleusers].[lastName] AS [lastName], 
+    [view_GetOnlySimpleusers].[age] AS [age]
+    FROM [dbo].[view_GetOnlySimpleusers] AS [view_GetOnlySimpleusers]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_UserId" Association="Self.FK_UserId">
+            <End Role="tbl_Users" EntitySet="tbl_Users" />
+            <End Role="tbl_Profiles" EntitySet="tbl_Profiles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="UsersModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_Profiles">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="age" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_Users">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="role" Type="Int32" Nullable="false" />
+          </EntityType>
+        <Association Name="FK_UserId">
+          <End Role="tbl_Users" Type="Self.tbl_Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tbl_Profiles" Type="Self.tbl_Profiles" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="tbl_Profiles">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EN_Users" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_Profiles" EntityType="Self.tbl_Profiles" />
+          <EntitySet Name="tbl_Users" EntityType="Self.tbl_Users" />
+          <AssociationSet Name="FK_UserId" Association="Self.FK_UserId">
+            <End Role="tbl_Users" EntitySet="tbl_Users" />
+            <End Role="tbl_Profiles" EntitySet="tbl_Profiles" />
+          </AssociationSet>
+          <EntitySet Name="view_GetOnlySimpleusers" EntityType="UsersModel.view_GetOnlySimpleusers" />
+          <EntitySet Name="view_GetOnlyAdmins" EntityType="UsersModel.view_GetOnlyAdmins" />
+          <EntitySet Name="tbl_Messages" EntityType="UsersModel.tbl_Messages" />
+        </EntityContainer>
+        <EntityType Name="view_GetOnlySimpleusers">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="age" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="age" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="view_GetOnlyAdmins">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbl_Messages">
+          <Key>
+            <PropertyRef Name="messageId" />
+          </Key>
+          <Property Name="messageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="adminId" Type="Int32" Nullable="false" />
+          <Property Name="simpleuserId" Type="Int32" Nullable="false" />
+          <Property Name="subject" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="bodyText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="UsersModelStoreContainer" CdmEntityContainer="EN_Users">
+          <EntitySetMapping Name="tbl_Profiles">
+            <EntityTypeMapping TypeName="UsersModel.tbl_Profiles">
+              <MappingFragment StoreEntitySet="tbl_Profiles">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="age" ColumnName="age" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Users">
+            <EntityTypeMapping TypeName="UsersModel.tbl_Users">
+              <MappingFragment StoreEntitySet="tbl_Users">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="role" ColumnName="role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_GetOnlySimpleusers">
+            <EntityTypeMapping TypeName="UsersModel.view_GetOnlySimpleusers">
+              <MappingFragment StoreEntitySet="view_GetOnlySimpleusers">
+                <ScalarProperty Name="age" ColumnName="age" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_GetOnlyAdmins">
+            <EntityTypeMapping TypeName="UsersModel.view_GetOnlyAdmins">
+              <MappingFragment StoreEntitySet="view_GetOnlyAdmins">
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Messages">
+            <EntityTypeMapping TypeName="UsersModel.tbl_Messages">
+              <MappingFragment StoreEntitySet="tbl_Messages">
+                <ScalarProperty Name="bodyText" ColumnName="bodyText" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="simpleuserId" ColumnName="simpleuserId" />
+                <ScalarProperty Name="adminId" ColumnName="adminId" />
+                <ScalarProperty Name="messageId" ColumnName="messageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
